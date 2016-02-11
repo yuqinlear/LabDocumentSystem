@@ -4,23 +4,23 @@
 (function () {
   'use strict';
 
-  function registerController($location, $scope, UserService, flashService) {
+  function RegisterCtrl($location, $scope, UserService, FlashService) {
 
     $scope.register = function register() {
       $scope.dataLoading = true;
       UserService.Create($scope.user)
         .then(function (response) {
           if (response.success) {
-            flashService.Success('Registration successful', true);
+            FlashService.Success('Registration successful', true);
             $location.path('/login');
           } else {
-            flashService.Error(response.message);
+            FlashService.Error(response.message);
             $scope.dataLoading = false;
           }
         });
     }
   }
 
-  angular.module('labDoc').controller('registerController', registerController);
+  angular.module('labDoc').controller('RegisterCtrl', RegisterCtrl);
 
 })();

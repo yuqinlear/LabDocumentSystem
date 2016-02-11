@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function flashService($rootScope) {
+  function FlashService($rootScope) {
     var service = {};
 
     service.Success = Success;
@@ -49,6 +49,6 @@
     }
   }
 
-  angular.module('labDoc').factory('flashService', flashService);
+  angular.module('labDoc').factory('FlashService', FlashService);
 
 })();
