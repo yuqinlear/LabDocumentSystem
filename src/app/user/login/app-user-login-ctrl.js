@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function loginController($location, AuthenticationService, flashService) {
+  function LoginCtrl($location, AuthenticationService, FlashService) {
 
     $scope.login = login;
 
@@ -27,6 +27,6 @@
     };
   }
 
-  angular.module('labDoc').controller('loginController', loginController);
+  angular.module('labDoc').controller('LoginCtrl', LoginCtrl);
 
 })();

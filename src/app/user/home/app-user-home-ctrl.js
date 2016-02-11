@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function homeController($scope, $rootScope, User) {
+  function HomeCtrl($scope, $rootScope, UserService) {
 
     $scope.user = null;
     $scope.allUsers = [];
@@ -14,27 +14,27 @@
     loadAllUsers();
 
     function loadCurrentUser() {
-      User.GetByUsername($rootScope.globals.currentUser.username)
+      UserService.GetByUsername($rootScope.globals.currentUser.username)
         .then(function (user) {
           $scope.user = user;
         });
     }
 
     function loadAllUsers() {
-      User.GetAll()
+      UserService.GetAll()
         .then(function (users) {
           $scope.allUsers = users;
         });
     }
 
     function deleteUser(id) {
-      User.Delete(id)
+      UserService.Delete(id)
         .then(function () {
           loadAllUsers();
         });
     }
   }
 
-  angular.module('labDoc').controller('homeController', HomeController);
+  angular.module('labDoc').controller('HomeCtrl', HomeCtrl);
 
 })();

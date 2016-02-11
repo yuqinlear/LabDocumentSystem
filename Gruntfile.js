@@ -21,13 +21,16 @@ module.exports = function(grunt) {
     },
 
     concat: {
+      options: {
+        sourceMap: true
+      },
       jsDev: {
         src: ['<%= path.app %>/**/*.js'],
-        dest: ['<%= path.build %>/js/docLab.js']
+        dest: '<%= path.build %>/js/labDoc.js'
       },
       cssDev: {
         src: ['<%= path.app %>/**/*.css'],
-        dest: ['<%= path.build %>/css/docLab.css']
+        dest: '<%= path.build %>/css/labDoc.css'
       }
     },
 
@@ -45,7 +48,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', [
     'concat',
-    'wiredep',
+    'wiredep'
   ]);
 
 };
