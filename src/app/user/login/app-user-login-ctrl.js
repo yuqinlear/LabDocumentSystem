@@ -21,7 +21,7 @@
           $scope.dataLoading = false;
         }
       });
-    };
+    }
   }
 
   angular.module('labDoc').controller('LoginCtrl', LoginCtrl);

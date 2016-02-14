@@ -1,5 +1,14 @@
 {
-  "globalstrict": true,
+  "strict": true,
+  "camelcase": true,
+  "eqeqeq": true,
+  "indent": 2,
+  "latedef": true,
+  "maxlen": 120,
+  "newcap": true,
+  "quotmark": "single",
+  "eqnull": true,
+  "undef": true,
   "globals": {
     "angular": false,
     "describe": false,

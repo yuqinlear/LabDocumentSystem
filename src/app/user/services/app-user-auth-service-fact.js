@@ -3,13 +3,7 @@
  */
 (function () {
   'use strict';
-
   function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserService) {
-    return {
-      login : login,
-      setCredentials : setCredentials,
-      clearCredentials : clearCredentials
-    };
 
     function login(username, password, callback) {
 
@@ -24,12 +18,13 @@
             } else {
               response = { success: false, message: 'Username or password is incorrect' };
             }
+
             callback(response);
           });
       }, 1000);
 
-      /* Use this for real authentication
-       ----------------------------------------------*/
+      /* Use this for real authentication ----------------------------------------------*/
+
       //$http.post('/api/authenticate', { username: username, password: password })
       //    .success(function (response) {
       //        callback(response);
@@ -47,7 +42,7 @@
         }
       };
 
-      $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
+      $http.defaults.headers.common.Authorization = 'Basic ' + authdata; // jshint ignore:line
       $cookieStore.put('globals', $rootScope.globals);
     }
 
@@ -56,6 +51,13 @@
       $cookieStore.remove('globals');
       $http.defaults.headers.common.Authorization = 'Basic';
     }
+
+    return {
+      login: login,
+      setCredentials: setCredentials,
+      clearCredentials: clearCredentials
+    };
+
   }
 
   // Base64 encoding service used by AuthenticationService
@@ -64,9 +66,9 @@
     keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
 
     encode: function (input) {
-      var output = "";
-      var chr1, chr2, chr3 = "";
-      var enc1, enc2, enc3, enc4 = "";
+      var output = '';
+      var chr1, chr2, chr3 = '';
+      var enc1, enc2, enc3, enc4 = '';
       var i = 0;
 
       do {
@@ -90,27 +92,27 @@
         this.keyStr.charAt(enc2) +
         this.keyStr.charAt(enc3) +
         this.keyStr.charAt(enc4);
-        chr1 = chr2 = chr3 = "";
-        enc1 = enc2 = enc3 = enc4 = "";
+        chr1 = chr2 = chr3 = '';
+        enc1 = enc2 = enc3 = enc4 = '';
       } while (i < input.length);
 
       return output;
     },
 
     decode: function (input) {
-      var output = "";
-      var chr1, chr2, chr3 = "";
-      var enc1, enc2, enc3, enc4 = "";
+      var output = '';
+      var chr1, chr2, chr3 = '';
+      var enc1, enc2, enc3, enc4 = '';
       var i = 0;
 
       // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
       var base64test = /[^A-Za-z0-9\+\/\=]/g;
       if (base64test.exec(input)) {
-        window.alert("There were invalid base64 characters in the input text.\n" +
-        "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
-        "Expect errors in decoding.");
+        window.alert('There were invalid base64 characters in the input text.\n ' +
+        'Valid base64 characters are A-Z, a-z, 0-9, +, \/, and = \n Expect errors in decoding.');
       }
-      input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+      input = input.replace(/[^A-Za-z0-9\+\/\=]/g, '');
 
       do {
         enc1 = this.keyStr.indexOf(input.charAt(i++));
@@ -124,23 +126,22 @@
 
         output = output + String.fromCharCode(chr1);
 
-        if (enc3 != 64) {
+        if (enc3 !== 64) {
           output = output + String.fromCharCode(chr2);
         }
-        if (enc4 != 64) {
+
+        if (enc4 !== 64) {
           output = output + String.fromCharCode(chr3);
         }
 
-        chr1 = chr2 = chr3 = "";
-        enc1 = enc2 = enc3 = enc4 = "";
+        chr1 = chr2 = chr3 = '';
+        enc1 = enc2 = enc3 = enc4 = '';
 
       } while (i < input.length);
 
       return output;
     }
   };
-
-
   angular.module('labDoc').factory('AuthenticationService', AuthenticationService);
 
 })();

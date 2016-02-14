@@ -6,15 +6,6 @@
 
   function UserService($q, $http) {
 
-    return {
-      getAll: getAll,
-      getById: getById,
-      getByUsername: getByUsername,
-      create: create,
-      update: update,
-      deleteById: deleteById
-    };
-
     function getAll() {
       return $http.get('/api/users').then(_handleSuccess, _handleError('Error getting all users'));
     }
@@ -43,11 +34,20 @@
       return res.data;
     }
 
-    function _handleError( errMsg ) {
-      return function( err ) {
-        return $.reject( { err: err , message: errMsg } );
-      }
+    function _handleError(errMsg) {
+      return function (err) {
+        return $.reject({ err: err, message: errMsg });
+      };
     }
+
+    return {
+      getAll: getAll,
+      getById: getById,
+      getByUsername: getByUsername,
+      create: create,
+      update: update,
+      deleteById: deleteById
+    };
   }
   angular.module('labDoc').factory('UserService', UserService);
 

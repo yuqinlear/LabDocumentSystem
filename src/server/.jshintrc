@@ -1,0 +1,9 @@
+{
+  "extends": "../../.jshintrc",
+  "strict": true,
+  "globals": {
+    "require": false,
+    "console": false,
+    "process": false
+  }
+}

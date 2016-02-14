@@ -2,15 +2,23 @@
  * Created by paul on 2/5/16.
  */
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
+  'use strict';
   grunt.initConfig({
     path: {
       app: 'src/app',
+      server: 'src/server',
       build: 'build'
     },
 
     jshint: {
-      files: ['Gruntfile.js', 'src/**/*.js']
+      frontend: {
+        src: ['<%= path.app %>/**/*.js']
+      },
+      node: {
+        src: ['Gruntfile.js', '<%= path.server %>/**/*.js'],
+        jshintrc: '<%= path.server %>/.jshintrc'
+      }
     },
 
     jscs: {
@@ -37,12 +45,12 @@ module.exports = function(grunt) {
     wiredep: {
       target: {
         src: ['src/app/index.html', 'karma.conf.js'],
-        overrides :{
-          bootstrap:{
-            main:[
-              "less/bootstrap.less",
-              "dist/css/bootstrap.css",
-              "dist/js/bootstrap.js"
+        overrides: {
+          bootstrap: {
+            main: [
+              'less/bootstrap.less',
+              'dist/css/bootstrap.css',
+              'dist/js/bootstrap.js'
             ]
           }
         }
@@ -56,6 +64,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-wiredep');
 
   grunt.registerTask('default', [
+    'jshint',
+    'jscs',
     'concat',
     'wiredep'
   ]);

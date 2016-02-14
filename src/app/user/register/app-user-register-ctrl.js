@@ -14,11 +14,11 @@
             FlashService.success('Registration successful', true);
             $location.path('/login');
           },
-        function( err ) {
+        function (err) {
           FlashService.error(err.message);
           $scope.dataLoading = false;
         });
-    }
+    };
   }
 
   angular.module('labDoc').controller('RegisterCtrl', RegisterCtrl);
