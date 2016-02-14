@@ -27,16 +27,21 @@ module.exports = function(grunt) {
       jsDev: {
         src: ['<%= path.app %>/**/*.js'],
         dest: '<%= path.build %>/js/labDoc.js'
-      },
-      cssDev: {
-        src: ['<%= path.app %>/**/*.css'],
-        dest: '<%= path.build %>/css/labDoc.css'
       }
     },
 
     wiredep: {
       target: {
-        src: 'src/app/index.html'
+        src: 'src/app/index.html',
+        overrides :{
+          bootstrap:{
+            main:[
+              "less/bootstrap.less",
+              "dist/css/bootstrap.css",
+              "dist/js/bootstrap.js"
+            ]
+          }
+        }
       }
     }
   });
