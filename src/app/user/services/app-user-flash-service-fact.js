@@ -8,8 +8,8 @@
     initService();
 
     return {
-      Success: Success,
-      Error: Error
+      success: success,
+      error: error
     };
 
     function initService() {
@@ -30,7 +30,7 @@
       }
     }
 
-    function Success(message, keepAfterLocationChange) {
+    function success(message, keepAfterLocationChange) {
       $rootScope.flash = {
         message: message,
         type: 'success',
@@ -38,7 +38,7 @@
       };
     }
 
-    function Error(message, keepAfterLocationChange) {
+    function error(message, keepAfterLocationChange) {
       $rootScope.flash = {
         message: message,
         type: 'error',

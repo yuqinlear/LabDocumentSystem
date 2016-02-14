@@ -5,15 +5,13 @@
   'use strict';
 
   function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserService) {
-    var service = {};
+    return {
+      login : login,
+      setCredentials : setCredentials,
+      clearCredentials : clearCredentials
+    };
 
-    service.Login = Login;
-    service.SetCredentials = SetCredentials;
-    service.ClearCredentials = ClearCredentials;
-
-    return service;
-
-    function Login(username, password, callback) {
+    function login(username, password, callback) {
 
       /* Dummy authentication for testing, uses $timeout to simulate api call
        ----------------------------------------------*/
@@ -39,7 +37,7 @@
 
     }
 
-    function SetCredentials(username, password) {
+    function setCredentials(username, password) {
       var authdata = Base64.encode(username + ':' + password);
 
       $rootScope.globals = {
@@ -53,7 +51,7 @@
       $cookieStore.put('globals', $rootScope.globals);
     }
 
-    function ClearCredentials() {
+    function clearCredentials() {
       $rootScope.globals = {};
       $cookieStore.remove('globals');
       $http.defaults.headers.common.Authorization = 'Basic';

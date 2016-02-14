@@ -8,19 +8,16 @@
 
     $scope.login = login;
 
-    (function initController() {
-      // reset login status
-      AuthenticationService.ClearCredentials();
-    })();
+    AuthenticationService.clearCredentials();
 
     function login() {
       $scope.dataLoading = true;
-      AuthenticationService.Login($scope.username, $scope.password, function (response) {
+      AuthenticationService.login($scope.username, $scope.password, function (response) {
         if (response.success) {
-          AuthenticationService.SetCredentials($scope.username, $scope.password);
+          AuthenticationService.setCredentials($scope.username, $scope.password);
           $location.path('/');
         } else {
-          FlashService.Error(response.message);
+          FlashService.error(response.message);
           $scope.dataLoading = false;
         }
       });
