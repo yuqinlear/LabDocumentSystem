@@ -64,7 +64,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-wiredep');
 
   grunt.registerTask('default', [
-    'jshint',
+    'jshint:frontend',
+    'jshint:node',
     'jscs',
     'concat',
     'wiredep'

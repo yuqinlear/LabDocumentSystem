@@ -36,7 +36,7 @@
 
     function _handleError(errMsg) {
       return function (err) {
-        return $.reject({ err: err, message: errMsg });
+        return $q.reject({ err: err, message: errMsg });
       };
     }
 
