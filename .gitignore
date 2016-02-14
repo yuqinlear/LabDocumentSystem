@@ -1,10 +1,22 @@
-logs/*
-!.gitkeep
-node_modules/
-bower_components/
-tmp
+================================
+#ignore IDE and OS configs
+================================
 .DS_Store
 .idea
 
+================================
+#ignore logs
+================================
+logs/
+
+================================
+#ignore npm and bower packages
+================================
+node_modules/
+bower_components/
+
+================================
 #ignore build path
+================================
 build/
+tmp/

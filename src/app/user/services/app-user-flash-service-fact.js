@@ -5,14 +5,12 @@
   'use strict';
 
   function FlashService($rootScope) {
-    var service = {};
-
-    service.Success = Success;
-    service.Error = Error;
-
     initService();
 
-    return service;
+    return {
+      Success: Success,
+      Error: Error
+    };
 
     function initService() {
       $rootScope.$on('$locationChangeStart', function () {

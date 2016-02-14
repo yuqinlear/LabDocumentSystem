@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function LoginCtrl($location, AuthenticationService, FlashService) {
+  function LoginCtrl($scope, $location, FlashService, AuthenticationService) {
 
     $scope.login = login;
 

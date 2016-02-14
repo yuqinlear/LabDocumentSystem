@@ -43,8 +43,7 @@
         return { success: false, message: error };
       };
     }
-
-    angular.module('labDoc').factory('UserService', UserService);
   }
+  angular.module('labDoc').factory('UserService', UserService);
 
 })();

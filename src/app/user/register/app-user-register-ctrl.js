@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function RegisterCtrl($location, $scope, UserService, FlashService) {
+  function RegisterCtrl($scope, $location, UserService, FlashService) {
 
     $scope.register = function register() {
       $scope.dataLoading = true;

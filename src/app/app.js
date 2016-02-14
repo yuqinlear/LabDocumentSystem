@@ -3,6 +3,7 @@
 // Declare app level module which depends on views, and components
   angular.module('labDoc', [
     'ngRoute',
+    'ngAnimate',
     'ngCookies',
     'ui.bootstrap'
   ]).
@@ -14,7 +15,7 @@
       })
       .when('/login', {
         controller: 'LoginCtrl',
-        templateUrl: 'user/login/app-user-login-tmp.html'
+        templateUrl: 'user/login/app-user-login-tmpl.html'
 
       })
       .when('/register', {
