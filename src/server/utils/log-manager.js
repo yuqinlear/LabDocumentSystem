@@ -5,7 +5,7 @@
 'use strict';
 
 var _ = require('lodash');
-var winston = require(winston);
+var winston = require('winston');
 winston.add(winston.transports.File, { filename: 'logs/backend.log' });
 
 function Logger(defaultFields) {
