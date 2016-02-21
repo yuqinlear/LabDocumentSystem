@@ -8,7 +8,8 @@ module.exports = function (grunt) {
     path: {
       app: 'src/app',
       server: 'src/server',
-      build: 'build'
+      build: 'build',
+      release: 'release'
     },
 
     jshint: {
@@ -34,11 +35,22 @@ module.exports = function (grunt) {
       },
       jsDev: {
         src: ['<%= path.app %>/**/*.js'],
-        dest: '<%= path.build %>/js/labDoc.js'
+        dest: '<%= path.release %>/js/labDoc.js'
       },
       cssDev: {
         src: ['<%= path.app %>/**/*.css'],
-        dest: '<%= path.build %>/css/labDoc.css'
+        dest: '<%= path.release %>/css/labDoc.css'
+      }
+    },
+
+    copy: {
+      release: {
+        files: [
+          {
+            src: ['<%= path.app %>/index.html'],
+            dest: '<%= path.release %>/index.html'
+          }
+        ]
       }
     },
 
@@ -55,20 +67,35 @@ module.exports = function (grunt) {
           }
         }
       }
+    },
+
+    ngtemplates: {
+      options: {
+        module: 'labDoc'
+      },
+      app: {
+        cwd: '<%= path.app %>',
+        src: ['**/!(index)*.html'],
+        dest: '<%= path.release %>/js/templatesCache.js'
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-wiredep');
+  grunt.loadNpmTasks('grunt-angular-templates');
 
   grunt.registerTask('default', [
     'jshint:frontend',
     'jshint:node',
     'jscs',
     'concat',
-    'wiredep'
+    'wiredep',
+    'ngtemplates',
+    'copy'
   ]);
 
 };

@@ -7,11 +7,15 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var timeout = require('connect-timeout');
 var expressSession = require('express-session');
+var path = require('path');
 var _ = require('lodash');
-var Logger = require('./utils/log-manager').Logger;
+var Logger = require('./src/server/utils/log-manager').Logger;
 var app = express();
 
 var port = process.env.PORT || 3000;
+
+app.use('/release', express.static(__dirname + '/release'));
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 app.use(timeout(300000));
 app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
@@ -30,8 +34,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/', function (req, res) {
+app.get('/api', function (req, res) {
   res.cookie('localhost', 'test: true', { maxAge:  365 * 86400000 }).send('This is a test API!');
+});
+
+app.get('/index.html', function (req, res) {
+  res.sendFile(__dirname + '/release/index.html');
 });
 
 app.listen(port, function () {
