@@ -26,9 +26,9 @@
         })
         .otherwise({ redirectTo: '/login' });
     }]).run(
-    function ($rootScope, $location, $cookieStore, $http, FlashService) {
+    function ($rootScope, $location, $cookies, $http, FlashService) {
       // keep user logged in after page refresh
-      $rootScope.globals = $cookieStore.get('globals') || {};
+      $rootScope.globals = $cookies.get('globals') || {};
       if ($rootScope.globals.currentUser) {
         $http.defaults.headers.common.Authorization = 'Basic ' + $rootScope.globals.currentUser.authdata;
       }

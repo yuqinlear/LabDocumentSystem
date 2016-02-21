@@ -3,33 +3,22 @@
  */
 (function () {
   'use strict';
-  function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserService) {
+  function AuthenticationService($http, $cookies, $rootScope, $log, UserService) {
 
-    function login(username, password, callback) {
-
-      /* Dummy authentication for testing, uses $timeout to simulate api call
-       ----------------------------------------------*/
-      $timeout(function () {
-        var response;
-        UserService.GetByUsername(username)
-          .then(function (user) {
-            if (user !== null && user.password === password) {
-              response = { success: true };
-            } else {
-              response = { success: false, message: 'Username or password is incorrect' };
-            }
-
-            callback(response);
-          });
-      }, 1000);
-
-      /* Use this for real authentication ----------------------------------------------*/
-
-      //$http.post('/api/authenticate', { username: username, password: password })
-      //    .success(function (response) {
-      //        callback(response);
-      //    });
-
+    function login(username, password) {
+      return $http.post('/api/users/authenticate', { username: username, password: password })
+        .then(
+        function (response) {
+          return response;
+        },
+        function (err) {
+          $log.error(err);
+          return {
+            status: err.status,
+            message: 'authentication failed!'
+          };
+        }
+      );
     }
 
     function setCredentials(username, password) {
@@ -43,12 +32,12 @@
       };
 
       $http.defaults.headers.common.Authorization = 'Basic ' + authdata; // jshint ignore:line
-      $cookieStore.put('globals', $rootScope.globals);
+      $cookies.put('globals', $rootScope.globals);
     }
 
     function clearCredentials() {
       $rootScope.globals = {};
-      $cookieStore.remove('globals');
+      $cookies.remove('globals');
       $http.defaults.headers.common.Authorization = 'Basic';
     }
 

@@ -3,13 +3,14 @@
   "camelcase": true,
   "eqeqeq": true,
   "indent": 2,
-  "latedef": true,
+  "latedef": "nofunc",
   "maxlen": 120,
   "newcap": true,
   "quotmark": "single",
   "eqnull": true,
   "undef": true,
   "globals": {
+    "window": false,
     "angular": false,
     "describe": false,
     "it": false,
@@ -17,6 +18,7 @@
     "beforeEach": false,
     "afterEach": false,
     "module": false,
-    "inject": false
+    "inject": false,
+    '_': false
   }
 }
