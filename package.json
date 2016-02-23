@@ -41,8 +41,10 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "lodash": "^4.3.0",
+    "mysql": "^2.10.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "q": "^1.4.1",
     "winston": "^2.1.1"
   }
 }
