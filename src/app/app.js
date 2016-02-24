@@ -24,6 +24,10 @@
           templateUrl: 'user/register/app-user-register-tmpl.html'
 
         })
+        .when('/uploadpdf', {
+          controller: 'UploadPDFCtrl',
+          templateUrl: 'user/uploadpdf/app-user-uploadpdf-tmpl.html'
+        })
         .otherwise({ redirectTo: '/login' });
     }]).run(
     function ($rootScope, $location, $cookies, $http, FlashService) {

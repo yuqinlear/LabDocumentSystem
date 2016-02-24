@@ -1,0 +1,15 @@
+<h1>Hi {{curr.firstName}}!</h1>
+<p>You're logged in!!</p><a href="#/login" ng-click="signout()">logout</a>
+
+<p>&nbsp;</p>
+
+<ul>
+    <li ng-repeat="paper in papers">
+        {{paper.filename}}
+    </li>
+</ul>
+<h3>PDF Upload:</h3>
+<p>Choose a pdf file:</p>
+
+<input type="file" file-model="myFile" size="50" />
+<button ng-click="uploadPDF()">upload</button>
