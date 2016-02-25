@@ -47,6 +47,7 @@ app.use(function (req, res, next) {
 //});
 
 require('./routes/userRouter')(app);
+require('./routes/fileUploadRouter')(app);
 
 app.get('/index.html', function (req, res) {
   res.sendFile(global.projectPath + '/release/index.html');

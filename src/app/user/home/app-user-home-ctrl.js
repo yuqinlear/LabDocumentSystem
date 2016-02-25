@@ -14,25 +14,26 @@
     loadAllUsers();
 
     function loadCurrentUser() {
-      UserService.GetByUsername($rootScope.globals.currentUser.username)
+      UserService.getByUsername($rootScope.globals.currentUser.username)
         .then(function (user) {
           $scope.user = user;
         });
     }
 
     function loadAllUsers() {
-      UserService.GetAll()
+      UserService.getAll()
         .then(function (users) {
           $scope.allUsers = users;
         });
     }
 
     function deleteUser(id) {
-      UserService.Delete(id)
+      UserService.delete(id)
         .then(function () {
           loadAllUsers();
         });
     }
+
   }
 
   angular.module('labDoc').controller('HomeCtrl', HomeCtrl);
