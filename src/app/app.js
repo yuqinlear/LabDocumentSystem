@@ -24,9 +24,9 @@
           templateUrl: 'user/register/app-user-register-tmpl.html'
 
         })
-        .when('/uploadpdf', {
+        .when('/upload-pdf', {
           controller: 'UploadPDFCtrl',
-          templateUrl: 'user/uploadpdf/app-user-uploadpdf-tmpl.html'
+          templateUrl: 'user/uploadpdf/app-user-upload-pdf-tmpl.html'
         })
         .otherwise({ redirectTo: '/login' });
     }]).run(
