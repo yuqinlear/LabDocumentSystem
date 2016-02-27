@@ -6,6 +6,7 @@
 
 var express = require('express'),
   passport = require('passport'),
+  User = require('../models/user'),
   LocalStrategy = require('passport-local').Strategy;
 
 module.exports = userRouter;
@@ -36,14 +37,32 @@ function userRouter(app) {
       })(req, res, next);
     }
   );
+
+  app.get('/api/users/:username', validAuth,
+    function (req, res) {
+      res.status(200).send(req.user);
+    });
+
 }
 
 passport.use(
   new LocalStrategy(
     function (username, password, done) {
+      //var theUser = new User(username, password);
+      //theUser.verifySelf().then(
+      //  function (user) {
+      //    return done(null, user);
+      //  },
+      //  function (err) {
+      //    if (err.status === 500) {
+      //      return done(err, false, err.message);
+      //    } else {
+      //      return done(null, false, err.message);
+      //    }
+      //  }
+      //);
 
-      // if the user is valid, return done(null, true);
-      return done(null, false);
+      return done(null, { id: 'testId' }); // uncomment this line for debug;
     }
   )
 );
@@ -53,14 +72,25 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  //User.findById(id, function (err, user) {
-  //  done(err, user);
-  //});
+  var theUser = new User();
+  theUser.findById(id).then(
+    function (user) {
+      return done(null, user);
+    },
+    function (err) {
+      err.message += '/n This user might be removed from the system!';
+      if (err.status === 500) {
+        return done(err, false, err.message);
+      } else {
+        return done(null, false, err.message);
+      }
+    }
+  );
 });
 
 function validAuth(req, res, next) {
   if (!req.isAuthenticated()) {
-    res.send(401);
+    res.sendStatus(401);
   } else {
     next();
   }

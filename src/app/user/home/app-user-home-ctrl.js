@@ -7,11 +7,13 @@
   function HomeCtrl($scope, $rootScope, UserService) {
 
     $scope.user = null;
-    $scope.allUsers = [];
-    $scope.deleteUser = deleteUser;
+
+    //$scope.allUsers = [];
+    //$scope.deleteUser = deleteUser;
 
     loadCurrentUser();
-    loadAllUsers();
+
+    //loadAllUsers();
 
     function loadCurrentUser() {
       UserService.getByUsername($rootScope.globals.currentUser.username)
@@ -20,19 +22,19 @@
         });
     }
 
-    function loadAllUsers() {
-      UserService.getAll()
-        .then(function (users) {
-          $scope.allUsers = users;
-        });
-    }
+    //function loadAllUsers() {
+    //  UserService.getAll()
+    //    .then(function (users) {
+    //      $scope.allUsers = users;
+    //    });
+    //}
 
-    function deleteUser(id) {
-      UserService.delete(id)
-        .then(function () {
-          loadAllUsers();
-        });
-    }
+    //function deleteUser(id) {
+    //  UserService.delete(id)
+    //    .then(function () {
+    //      loadAllUsers();
+    //    });
+    //}
 
   }
 

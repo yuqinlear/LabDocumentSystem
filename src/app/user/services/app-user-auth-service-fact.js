@@ -3,7 +3,7 @@
  */
 (function () {
   'use strict';
-  function AuthenticationService($http, $cookies, $rootScope, $log, UserService) {
+  function AuthenticationService($http, $cookies, $rootScope, $log, $q, UserService) {
 
     function login(username, password) {
       return $http.post('/api/users/authenticate', { username: username, password: password })
@@ -12,11 +12,10 @@
           return response;
         },
         function (err) {
-          $log.error(err);
-          return {
+          return $q.reject({
             status: err.status,
             message: 'authentication failed!'
-          };
+          });
         }
       );
     }
