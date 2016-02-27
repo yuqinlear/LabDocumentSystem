@@ -26,9 +26,10 @@ function fileUploadRouter(app) {
         console.log('Field [' + fieldname + ']: value: ' + val);
 
         //add user name to dest path
+        /*
         if (fieldname === 'name') {
           console.log('changing user to ' + val);
-          dest += val;
+          dest += val + '/';
           fs.access(dest, function (err) {
             console.log(err ? 'no access!' : 'can read/write');
             if (err) {
@@ -37,10 +38,11 @@ function fileUploadRouter(app) {
             }
           });
         }
+        */
       });
       busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding);
-        file.pipe(fs.createWriteStream(dest));
+        file.pipe(fs.createWriteStream(dest + filename));
       });
 
       busboy.on('finish', function () {
