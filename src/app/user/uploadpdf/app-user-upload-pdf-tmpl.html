@@ -1,15 +1,17 @@
-<h1>Hi {{curr.firstName}}!</h1>
-<p>You're logged in!!</p><a href="#/login">logout</a>
+<form>
+    <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter name" ng-model="customer.name">
+    </div>
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="customer.email">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputFile">Avatar</label>
+        <input type="file" id="exampleInputFile" file-model="customer.file">
+    </div>
+    <button type="submit" class="btn btn-default" ng-click="fileUpload()">Submit</button>{{'  Status: ' + response.status}}
+</form>
 
-<p>&nbsp;</p>
-
-
-<h3>PDF Upload:</h3>
-<p>Choose a pdf file:</p>
-
-<input type="file" file="file" required />
-<button ng-click="fileUpload()"></button>
-<p>Filename: {{filename}}</p>
-<p>Size: {{size + ' Byte'}}</p>
-<p>Type: {{type}}</p>
-
+{{customer}}

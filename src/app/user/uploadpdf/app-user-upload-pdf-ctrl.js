@@ -4,58 +4,51 @@
 (function () {
   'use strict';
 
-  angular.module('labDoc').directive('file', function () {
+  angular.module('labDoc').directive('fileModel', ['$parse', function ($parse) {
     return {
       restrict: 'A',
-      scope: {
-        file: '='
-      },
       link: function (scope, element, attrs) {
-        element.bind('change', function (event) {
-          //alert(event.target.files.length);
-          var file = event.target.files[0];
-          scope.file = file ? file : undefined;
-          scope.filename = file.name;
-          scope.size = file.size;
-          scope.type = file.type;
-
-          //alert(scope.file.size + ' ' + scope.file.type);
-          scope.$apply();
+        var model = $parse(attrs.fileModel);
+        var modelSetter = model.assign;
+        element.bind('change', function () {
+          scope.$apply(function () {
+            modelSetter(scope, element[0].files[0]);
+          });
         });
       }
     };
-  });
+  }]);
+  angular.module('labDoc').service('multipartForm', ['$http', function ($http) {
+    this.post = function (uploadUrl, data) {
+      var fd = new FormData();
+      for (var key in data) {
+        if (key) {
+          fd.append(key, data[key]);
+        }
+      }
+      return $http.post(uploadUrl, fd, {
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined }
+      });
+    };
+  }]);
 
-  function UploadPDFCtrl($scope, $rootScope, $http, FlashService) {
+  function UploadPDFCtrl($scope, $rootScope, multipartForm) {
     //$scope.curr = $rootScope.globals.currentUser.username;
-
+    $scope.customer = {};
+    $scope.response = {};
+    $scope.response.status = 'Not upload yet';
     loadFiles();
     function loadFiles() {
-
     }
-
     $scope.fileUpload = function () {
-      $scope.filename = $scope.file.name;
-      $scope.size = $scope.file.size;
-      $scope.type = $scope.file.type;
-      $http({
-        method: 'POST',
-        url: 'api/user/pdf',
-        headers: {
-          'Content-Type': 'application/pdf'
-        },
-        data: {
-          upload: $scope.file
-        }
-      })
-        .success(function (data) {
-
-        })
-        .error(function (data, status) {
-
+      multipartForm.post('api/user/pdf', $scope.customer)
+        .then(function (response) {
+          $scope.response = response;
+        }, function (response) {
+          $scope.response = response;
         });
     };
-
   }
 
   angular.module('labDoc').controller('UploadPDFCtrl', UploadPDFCtrl);

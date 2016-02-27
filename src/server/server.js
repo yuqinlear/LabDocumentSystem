@@ -5,6 +5,7 @@
 'use strict';
 var express = require('express');
 var bodyParser = require('body-parser');
+var busboy = require('connect-busboy');
 var timeout = require('connect-timeout');
 var expressSession = require('express-session');
 var passport = require('passport');
@@ -17,10 +18,10 @@ var port = process.env.PORT || 3000;
 global.projectPath = path.resolve(__dirname, '../../');
 app.use('/release', express.static(global.projectPath + '/release'));
 app.use('/bower_components', express.static(global.projectPath + '/bower_components'));
-
 app.use(timeout(300000));
 app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 app.use(bodyParser.json({ limit: '5mb' }));
+app.use(busboy());
 app.use(function (req, res, next) {
   console.log('request\'s body');
   console.log(req.body);
