@@ -10,7 +10,7 @@ var inspect = require('util').inspect;
 var Busboy = require('busboy');
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
-var dest = appDir + '/user_uploads/';
+var dest = appDir + '/../../user_uploads/';
 
 fs.access(dest, function (err) {
   console.log(err ? 'no access to ' + dest : 'can access ' + dest);
@@ -22,7 +22,7 @@ fs.access(dest, function (err) {
 module.exports = fileUploadRouter;
 
 function fileUploadRouter(app) {
-  app.post('/api/user/pdf',
+  app.post('/api/users/pdf',
     function (req, res) {
       var busboy = new Busboy({ headers: req.headers });
       busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {

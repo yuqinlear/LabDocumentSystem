@@ -25,7 +25,7 @@ function User(username, hiddenPW, id, email, registrationData, state, firstname,
   this.lastname = lastname;
   this._setUserAttributes = _setUserAttributes.bind(this);
 }
-
+/*
 User.prototype.findById = function (id) {
   var self = this;
   var dfd = Q.defer();
@@ -75,7 +75,7 @@ User.prototype.verifySelf = function () {
   });
   return dfd.promise;
 };
-
+*/
 function _setUserAttributes(userTableFileds) {
   /*jshint validthis:true */
   this.id = userTableFileds.id;

@@ -27,7 +27,7 @@
         })
         .when('/upload-pdf', {
           controller: 'UploadPDFCtrl',
-          templateUrl: 'user/uploadpdf/app-user-upload-pdf-tmpl.html'
+          templateUrl: 'content/uploadpdf/app-user-upload-pdf-tmpl.html'
         })
         .otherwise({ redirectTo: '/login' });
     }]).run(

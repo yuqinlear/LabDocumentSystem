@@ -13,8 +13,18 @@
         <input type="file" id="exampleInputFile" file-model="customer.files" multiple>
     </div>
     <button type="submit" class="btn btn-default" id="btnupload" ng-click="fileUpload()">Submit</button>{{'  Status: ' + response.status}}
-    <p>'File Validation: '{{customer.fileValid}}</p>
+    File Validation: {{customer.fileValid}}
+
 </form>
 
 {{customer}}
-Va
+<p>Get files:</p>
+<button class="btn btn-default" ng-click="getFiles()">Pull</button>
+<p>&nbsp;</p>
+
+<ul class="list-group">
+    <li class="list-group-item list-group-item-success">Files</li>
+    <li class="list-group-item" ng-repeat="filename in customer.filenames" >
+        <a ng-click="readFile(filename)">{{filename}}</a>
+    </li>
+</ul>

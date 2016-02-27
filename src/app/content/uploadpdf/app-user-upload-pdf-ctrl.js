@@ -27,31 +27,8 @@
       }
     };
   }]);
-  angular.module('labDoc').service('multipartForm', ['$http', function ($http) {
-    this.post = function (uploadUrl, data) {
-      var fd = new FormData();
-      for (var key in data) {
-        if (key && key !== 'files') {
-          fd.append(key, data[key]);
-        }
-      }
 
-      //make sure the sequence, files at the end of FormData
-      var f = 'files';
-      for (var fileKey in data[f]) {
-        if (fileKey) {
-          fd.append(fileKey, data[f][fileKey]);
-        }
-      }
-
-      return $http.post(uploadUrl, fd, {
-        transformRequest: angular.identity,
-        headers: { 'Content-Type': undefined }
-      });
-    };
-  }]);
-
-  function UploadPDFCtrl($scope, $rootScope, multipartForm) {
+  function UploadPDFCtrl($scope, $rootScope, uploadService, filesService) {
     //$scope.curr = $rootScope.globals.currentUser.username;
     $scope.customer = {};
     $scope.response = {};
@@ -62,25 +39,52 @@
     $scope.customer.nameVaild = '';
     $scope.customer.fileValid = 'No file yet';
     $scope.response.status = 'Not upload yet';
+    $scope.customer.filenames = [];
     loadFiles();
     function loadFiles() {
     }
+
     $scope.fileUpload = function () {
       if ($scope.customer.name === '') {
         $scope.customer.nameValid = 'Username cannot be empty!';
         return;
-      }else if ($scope.customer.name.search(/[\#<>$%\*!\`&\'\"\|\{\}\?=\/\\:@\s]/g) >= 0) {
+      } else if ($scope.customer.name.search(/[\#<>$%\*!\`&\'\"\|\{\}\?=\/\\:@\s]/g) >= 0) {
         $scope.customer.nameValid = 'Invalid!  Username contains characters';
         return;
       }
       $scope.customer.nameValid = '';
-      multipartForm.post('api/user/pdf', $scope.customer)
+      uploadService.post($scope.customer)
         .then(function (response) {
           $scope.response = response;
         }, function (response) {
           $scope.response = response;
         });
     };
+
+    $scope.getFiles = function () {
+      if ($scope.customer.name === '') {
+        $scope.customer.nameValid = 'Username cannot be empty!';
+        return;
+      } else if ($scope.customer.name.search(/[\#<>$%\*!\`&\'\"\|\{\}\?=\/\\:@\s]/g) >= 0) {
+        $scope.customer.nameValid = 'Invalid!  Username contains characters';
+        return;
+      }
+      $scope.customer.nameValid = '';
+      filesService.getFilenames($scope.customer.name)
+        .then(function (response) {
+          $scope.customer.filenames = response.data;
+        }, function (response) {
+          alert(response.data);
+        });
+    };
+
+    $scope.readFile = function (filename) {
+      filesService.getFileByUser(filename, $customer.name)
+        .then(function (response) {
+
+        })
+    };
+
   }
 
   angular.module('labDoc').controller('UploadPDFCtrl', UploadPDFCtrl);
