@@ -21,3 +21,9 @@ bower_components/
 build/
 tmp/
 release/
+
+================================
+#ignore user_uploads/
+================================
+user_uploads/
+src/server/user_uploads/

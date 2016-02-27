@@ -8,8 +8,10 @@ var express = require('express');
 var fs = require('fs');
 var inspect = require('util').inspect;
 var Busboy = require('busboy');
+var path = require('path');
+var appDir = path.dirname(require.main.filename);
+var dest = appDir + '/user_uploads/';
 
-var dest = __dirname + '/../users-upload/';
 fs.access(dest, function (err) {
   console.log(err ? 'no access to ' + dest : 'can access ' + dest);
   if (err) {
