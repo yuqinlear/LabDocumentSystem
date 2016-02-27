@@ -1,12 +1,12 @@
-<h1>Hi {{user.firstName}}!</h1>
+<h1>Hi {{user.firstname}}  {{user.lastname}}!</h1>
 <p>You're logged in!!</p>
-<h3>All registered users:</h3>
-<ul>
-    <li ng-repeat="user in allUsers">
-        {{user.username}} ({{user.firstName}} {{user.lastName}})
-        - <a href="#" ng-click="deleteUser(user.id)">Delete</a>
-    </li>
-</ul>
+<!--<h3>All registered users:</h3>-->
+<!--<ul>-->
+    <!--<li ng-repeat="user in allUsers">-->
+        <!--({{user.firstname}} {{user.lastname}})-->
+         <!--<a href="#" ng-click="deleteUser(user.id)">Delete</a>-->
+    <!--</li>-->
+<!--</ul>-->
 <p><a href="#/login" class="btn btn-primary">Logout</a></p>
 <p>&nbsp;</p>
 <p>Press here to upload your paper:</p>

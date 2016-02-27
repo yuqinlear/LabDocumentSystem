@@ -26,7 +26,6 @@ function fileUploadRouter(app) {
         console.log('Field [' + fieldname + ']: value: ' + val);
 
         //add user name to dest path
-        /*
         if (fieldname === 'name') {
           console.log('changing user to ' + val);
           dest += val + '/';
@@ -38,7 +37,6 @@ function fileUploadRouter(app) {
             }
           });
         }
-        */
       });
       busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding);
