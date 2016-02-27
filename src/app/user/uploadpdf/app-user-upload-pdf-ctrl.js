@@ -12,7 +12,7 @@
         var modelSetter = model.assign;
         element.bind('change', function () {
           scope.$apply(function () {
-            modelSetter(scope, element[0].files[0]);
+            modelSetter(scope, element[0].files);
           });
         });
       }
@@ -23,7 +23,15 @@
       var fd = new FormData();
       for (var key in data) {
         if (key) {
-          fd.append(key, data[key]);
+          if (key === 'files') {
+            for (var fileKey in data[key]) {
+              if (fileKey) {
+                fd.append(fileKey, data[key][fileKey]);
+              }
+            }
+          }else {
+            fd.append(key, data[key]);
+          }
         }
       }
       return $http.post(uploadUrl, fd, {

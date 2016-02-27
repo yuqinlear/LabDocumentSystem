@@ -13,6 +13,7 @@ var dest = __dirname + '/../users-upload/';
 fs.access(dest, function (err) {
   console.log(err ? 'no access to ' + dest : 'can access ' + dest);
   if (err) {
+    console.log('Creating upload directory' + dest);
     fs.mkdirSync(dest);
   }
 });
@@ -26,25 +27,32 @@ function fileUploadRouter(app) {
         console.log('Field [' + fieldname + ']: value: ' + val);
 
         //add user name to dest path
-        /*
         if (fieldname === 'name') {
-          console.log('changing user to ' + val);
-          dest += val + '/';
-          fs.access(dest, function (err) {
-            console.log(err ? 'no access!' : 'can read/write');
-            if (err) {
-              console.log('no access, making directory now!');
-              fs.mkdir(dest);
-            }
-          });
+          req.pathname = dest + val + '/';
         }
-        */
+
       });
       busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding);
-        file.pipe(fs.createWriteStream(dest + filename));
-      });
+        console.log('changing user path to ' + req.pathname);
 
+        //add user name to dest path
+        fs.access(req.pathname, function (err) {
+          console.log(err ? 'no access!' : 'can read/write');
+          if (err) {
+            console.log('no access, making directory now!');
+            fs.mkdir(req.pathname, function (err) {
+              if (!err) {
+                file.pipe(fs.createWriteStream(req.pathname + filename));
+              } else {
+                console.log('Error when making directory' + err);
+              }
+            });
+          }else {
+            file.pipe(fs.createWriteStream(req.pathname + filename));
+          }
+        });
+      });
       busboy.on('finish', function () {
         res.writeHead(200, { Connection: 'close' });
         res.end("That's all folks!");
