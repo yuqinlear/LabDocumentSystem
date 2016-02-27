@@ -13,7 +13,7 @@
       AuthenticationService.login($scope.username, $scope.password)
         .then(
           function (response) {
-            AuthenticationService.setCredentials($scope.username, $scope.password);
+            //AuthenticationService.setCredentials($scope.username, $scope.password);
             $location.path('/');
           },
           function (err) {

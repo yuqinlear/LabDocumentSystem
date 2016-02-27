@@ -13,6 +13,7 @@ var path = require('path');
 var _ = require('lodash');
 var Logger = require('./utils/log-manager').Logger;
 var app = express();
+var crypto = require('crypto');
 
 var port = process.env.PORT || 3000;
 global.projectPath = path.resolve(__dirname, '../../');
@@ -22,12 +23,14 @@ app.use(timeout(300000));
 app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(busboy());
-app.use(function (req, res, next) {
-  console.log('request\'s body');
-  console.log(req.body);
+
+app.use(function hashPW(req, res, next) {
+  console.log(req.body.password);
+  if (typeof req.body.password  === 'string') {
+    req.body.password = crypto.createHash('sha256', 'docLab_salt').update(req.body.password).digest('base64');
+  }
   next();
 });
-
 app.use(expressSession({
   secret: 'labDoc_session_salt',
   cookie: { maxAge: 86400000 }, // 1 day

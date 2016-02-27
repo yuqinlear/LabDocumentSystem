@@ -14,6 +14,10 @@
       return $http.get('/api/users/' + id).then(_handleSuccess, _handleError('Error getting user by id'));
     }
 
+    function getCurrentUser() {
+      return $http.get('/api/users/current-user').then(_handleSuccess, _handleError('Error getting currentUser'));
+    }
+
     function getByUsername(username) {
       return $http.get('/api/users/' + username).then(_handleSuccess, _handleError('Error getting user by username'));
     }
@@ -44,6 +48,7 @@
       getAll: getAll,
       getById: getById,
       getByUsername: getByUsername,
+      getCurrentUser: getCurrentUser,
       create: create,
       update: update,
       deleteById: deleteById

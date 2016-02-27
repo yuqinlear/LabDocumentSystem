@@ -62,7 +62,7 @@ passport.use(
       //  }
       //);
 
-      return done(null, { id: 'testId' }); // uncomment this line for debug;
+      return done(null, { id: 2 }); // uncomment this line for debug;
     }
   )
 );
@@ -73,19 +73,20 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
   var theUser = new User();
-  theUser.findById(id).then(
-    function (user) {
-      return done(null, user);
-    },
-    function (err) {
-      err.message += '/n This user might be removed from the system!';
-      if (err.status === 500) {
-        return done(err, false, err.message);
-      } else {
-        return done(null, false, err.message);
-      }
-    }
-  );
+  return done(null, theUser);  // uncomment this line for debug;
+  //theUser.findById(id).then(
+  //  function (user) {
+  //    return done(null, user);
+  //  },
+  //  function (err) {
+  //    err.message += '/n This user might be removed from the system!';
+  //    if (err.status === 500) {
+  //      return done(err, false, err.message);
+  //    } else {
+  //      return done(null, false, err.message);
+  //    }
+  //  }
+  //);
 });
 
 function validAuth(req, res, next) {

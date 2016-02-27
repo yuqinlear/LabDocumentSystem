@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function HomeCtrl($scope, $rootScope, UserService) {
+  function HomeCtrl($scope, $rootScope, $location, $log, UserService, blockUI) {
 
     $scope.user = null;
 
@@ -15,11 +15,30 @@
 
     //loadAllUsers();
 
+    //function loadCurrentUser() {
+    //  UserService.getByUsername($rootScope.globals.currentUser.username)
+    //    .then(function (user) {
+    //      $scope.user = user;
+    //    });
+    //}
+
     function loadCurrentUser() {
-      UserService.getByUsername($rootScope.globals.currentUser.username)
-        .then(function (user) {
-          $scope.user = user;
-        });
+      blockUI.start();
+
+      UserService.getCurrentUser()
+        .then(
+          function (user) {
+            $scope.user = user;
+          },
+          function (err) {
+            $log.error(err);
+            $location.path('/login');
+          }
+      ).finally(
+        function () {
+          blockUI.stop();
+        }
+      );
     }
 
     //function loadAllUsers() {

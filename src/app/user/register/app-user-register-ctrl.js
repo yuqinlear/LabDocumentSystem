@@ -11,7 +11,7 @@
       UserService.Create($scope.user)
         .then(
         function (response) {
-            FlashService.success('Registration successful', true);
+            FlashService.success('Registered successfully', true);
             $location.path('/login');
           },
         function (err) {
