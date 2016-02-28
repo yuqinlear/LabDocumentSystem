@@ -8,15 +8,16 @@
   function filesService($http) {
 
     function getFilenames(username) {
-      return $http.get('api/users/files/' + username);
+      return $http.get('api/users/' + username + '/files/');
     }
 
-    function getFileByUser(filename, username) {
-      return $http.get('api/users/files/' + username + '/' + filename);
+    function getFileByUserAndFilename(filename, username) {
+      return $http.get('api/users/' + username + '/files/' + filename, { responseType: 'arraybuffer' });
     }
 
     return {
-      getFilenames: getFilenames
+      getFilenames: getFilenames,
+      getFileByUserAndFilename: getFileByUserAndFilename
     };
   }
   angular.module('labDoc').factory('filesService', filesService);

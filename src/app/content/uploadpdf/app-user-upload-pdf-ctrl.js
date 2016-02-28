@@ -28,7 +28,7 @@
     };
   }]);
 
-  function UploadPDFCtrl($scope, $rootScope, uploadService, filesService) {
+  function UploadPDFCtrl($scope, $rootScope, $sce, uploadService, filesService) {
     //$scope.curr = $rootScope.globals.currentUser.username;
     $scope.customer = {};
     $scope.response = {};
@@ -79,10 +79,21 @@
     };
 
     $scope.readFile = function (filename) {
-      filesService.getFileByUser(filename, $customer.name)
+      filesService.getFileByUserAndFilename(filename, $scope.customer.name)
         .then(function (response) {
+          //alert(JSON.stringify(response));
+          var file = new Blob([response], { type: 'application/pdf' });
+          var fileURL = URL.createObjectURL(file);
+          $scope.customer.url = $sce.trustAsResourceUrl(fileURL);
 
-        })
+          //window.open(fileURL);
+          //$scope.url = fileURL;
+          $scope.customer.isLoading = false;
+          $scope.customer.info = '';
+        }, function (data) {
+          $scope.customer.isLoading = false;
+          $scope.customer.info = JSON.stringify(data);
+        });
     };
 
   }

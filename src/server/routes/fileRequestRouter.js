@@ -13,7 +13,7 @@ var dest = appDir + '/../../user_uploads/';
 module.exports = fileRequestRouter;
 
 function fileRequestRouter(app) {
-  app.get('/api/users/files/:username',
+  app.get('/api/users/:username/files',
     function (req, res) {
 
       console.log('Reading from ' + dest + req.params.username);
@@ -25,11 +25,31 @@ function fileRequestRouter(app) {
           res.end(JSON.stringify(files));
         }else {
           //TODO: need refinement
-          res.writeHead(400, { Connection: 'close' });
+          res.writeHead(404, { Connection: 'close' });
           res.end(err);
         }
 
       });
 
+    });
+
+  app.get('/api/users/:username/files/:filename',
+    function (req, res) {
+      fs.readFile(dest + req.params.username + '/' + req.params.filename,
+        function (err, data) {
+          console.log(data);
+          if (!err) {
+            res.writeHead(200,
+              { Connection: 'close',
+                contentType: 'application/pdf',
+                contentDisposition: 'attachment; filename=' + req.params.filename
+              });
+            res.end(data);
+          }else {
+            console.log('Error when sending files: ' + err);
+            res.writeHead(404, { Connection: 'close' });
+            res.end(err);
+          }
+        });
     });
 }
