@@ -11,13 +11,8 @@ This app will have the following features:
   * Records can be sorted and presented by different tags such as date and project topic.
   * Records can be searched by key words.
 
-## Plan
-* __[2016/02/03 - 2016/02/06]__ Project Selection, Plan Discussion, and Proposal Draft Writing
-* __[2016/02/07 - 2016/02/26]__ System Design, Code Writing, Document Writing 
-* __[2016/02/27 - 2016/02/29]__ User Manual Writing and Video Presentation Making
-
 ## Resource
-[MEAN Stack] mean.io/
+AngularJs, NodeJs, Express, MongoDB, MySQL and etc.
 
 ## Owner
 @team: [Sly pyhton](https://github.com/orgs/BitTigerInst/teams/sly-python)
