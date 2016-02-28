@@ -23,7 +23,7 @@
         }
       }
 
-      return $http.post('api/users/pdf', fd, {
+      return $http.post('api/documents/', fd, {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       });

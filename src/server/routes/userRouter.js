@@ -14,7 +14,7 @@ module.exports = userRouter;
 function userRouter(app) {
   app.get('/api/users/', validAuth,
     function (req, res) {
-      res.statusCode(200).send('welcome !');
+      res.status(200).send('welcome !');
     });
 
   app.post('/api/users/authenticate',
@@ -45,7 +45,7 @@ function userRouter(app) {
       }
       var theUser = new User(req.body.username, req.body.hiddenPW, req.body.email,
         req.body.firstname, req.body.lastname);
-      theUser.create().then(
+      theUser.save().then(
         function (user) {
           res.status(200).send({ message: 'registered successfully' });
         },
@@ -79,21 +79,20 @@ passport.use(
       passwordField: 'hiddenPW'
     },
     function (username, hiddenPW, done) {
-      var theUser = new User(username, hiddenPW);
-      theUser.verifySelf().then(
-        function (user) {
-          return done(null, user);
-        },
-        function (err) {
-          if (err.status === 500) {
-            return done(err, false, err.message);
-          } else {
-            return done(null, false, err.message);
-          }
-        }
-      );
+      //User.verify(username, hiddenPW).then(
+      //  function (user) {
+      //    return done(null, user);
+      //  },
+      //  function (err) {
+      //    if (err.status === 500) {
+      //      return done(err, false, err.message);
+      //    } else {
+      //      return done(null, false, err.message);
+      //    }
+      //  }
+      //);
 
-      //return done(null, { id: 2 }); // uncomment this line for debug;
+      return done(null, { id: 2 }); // uncomment this line for debug;
     }
   )
 );
@@ -103,23 +102,21 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  var theUser = new User();
+  return done(null, theUser);  // uncomment this line for debug;
 
-  //return done(null, theUser);  // uncomment this line for debug;
-
-  theUser.findById(id).then(
-    function (user) {
-      return done(null, user);
-    },
-    function (err) {
-      err.message += '/n This user might be removed from the system!';
-      if (err.status === 500) {
-        return done(err, false, err.message);
-      } else {
-        return done(null, false, err.message);
-      }
-    }
-  );
+  //User.findById(id).then(
+  //  function (user) {
+  //    return done(null, user);
+  //  },
+  //  function (err) {
+  //    err.message += '/n This user might be removed from the system!';
+  //    if (err.status === 500) {
+  //      return done(err, false, err.message);
+  //    } else {
+  //      return done(null, false, err.message);
+  //    }
+  //  }
+  //);
 });
 
 function validAuth(req, res, next) {

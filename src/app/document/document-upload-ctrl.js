@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function UploadPDFCtrl($scope, $rootScope, $sce, $log, uploadService, filesService) {
+  function UploadPDFCtrl($scope, $rootScope, $sce, $log, uploadService, $location, filesService) {
     //$scope.curr = $rootScope.globals.currentUser.username;
     $scope.customer = {};
     $scope.response = {};
@@ -29,8 +29,11 @@
       uploadService.post($scope.customer)
         .then(function (response) {
           $scope.response = response;
-        }, function (error) {
-          $scope.error = error;
+        }, function (err) {
+          $scope.error = err;
+          if (err.status === 401) {
+            $location.path('/login');
+          }
         });
     };
 

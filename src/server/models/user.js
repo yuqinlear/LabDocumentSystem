@@ -25,8 +25,7 @@ function User(username, hiddenPW, email, firstname, lastname, reg_date, state, i
   this._setUserAttributes = _setUserAttributes.bind(this);
 }
 
-User.prototype.findById = function (id) {
-  var self = this;
+User.findById = function (id) {
   var dfd = Q.defer();
   mysqlPool.getConnection(function (err, connection) {
     connection.query('SELECT * FROM users where id = ?', id, function (err, rows) {
@@ -37,8 +36,9 @@ User.prototype.findById = function (id) {
         if (rows.length === 0) {
           dfd.reject({ status: 400, message: 'cannot find the user' });
         } else {
-          self._setUserAttributes(rows[0]);
-          dfd.resolve(self);
+          var newUser = new User();
+          newUser._setUserAttributes(rows[0]);
+          dfd.resolve(newUser);
         }
       }
 
@@ -49,22 +49,22 @@ User.prototype.findById = function (id) {
   return dfd.promise;
 };
 
-User.prototype.verifySelf = function () {
-  var self = this;
+User.verify = function (username, hiddenPW) {
   var dfd = Q.defer();
   mysqlPool.getConnection(function (err, connection) {
-    connection.query('SELECT * FROM users where username = ?', self.username, function (err, rows) {
+    connection.query('SELECT * FROM users where username = ?', username, function (err, rows) {
       if (err) {
         logger.error(err);
         dfd.reject({ status: 500, message: 'system internal error' });
       } else {
         if (rows.length === 0) {
-          dfd.reject({ status: 400, message: 'cannot find the username: ' + self.username });
-        } else if (rows[0].hiddenPW !== self.hiddenPW) {
+          dfd.reject({ status: 400, message: 'cannot find the username: ' + username });
+        } else if (rows[0].hiddenPW !== hiddenPW) {
           dfd.reject({ status: 400, message: 'the hiddenPW is not correct!' });
         } else {
-          self._setUserAttributes(rows[0]);
-          dfd.resolve(self);
+          var newUser = new User();
+          newUser._setUserAttributes(rows[0]);
+          dfd.resolve(newUser);
         }
       }
 
@@ -75,7 +75,7 @@ User.prototype.verifySelf = function () {
   return dfd.promise;
 };
 
-User.prototype.create = function () {
+User.prototype.save = function () {
   var self = this;
   var dfd = Q.defer();
   mysqlPool.getConnection(function (err, connection) {

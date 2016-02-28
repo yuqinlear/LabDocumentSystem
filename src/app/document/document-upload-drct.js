@@ -10,7 +10,7 @@
         user: '='
       },
       restrict: 'E',
-      templateUrl: 'document/app-user-upload-pdf-tmpl.html',
+      templateUrl: 'document/document-upload-tmpl.html',
       controller: 'UploadPDFCtrl'
     };
   }
