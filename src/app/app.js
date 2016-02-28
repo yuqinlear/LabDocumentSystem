@@ -27,27 +27,14 @@
         })
         .when('/upload-pdf', {
           controller: 'UploadPDFCtrl',
-          templateUrl: 'content/uploadpdf/app-user-upload-pdf-tmpl.html'
+          templateUrl: 'document/app-user-upload-pdf-tmpl.html'
         })
         .otherwise({ redirectTo: '/login' });
     }]).run(
     function ($rootScope, $location, $cookies, $http, FlashService) {
-      // keep user logged in after page refresh
-      //$rootScope.globals = $cookies.get('globals') || {};
-      //if ($rootScope.globals.currentUser) {
-      //  $http.defaults.headers.common.Authorization = 'Basic ' + $rootScope.globals.currentUser.authdata;
-      //}
-      //
-      //$rootScope.$on('$locationChangeStart', function (event, next, current) {
-      //  FlashService.clearFlashMessage();
-      //
-      //  // redirect to login page if not logged in and trying to access a restricted page
-      //  var restrictedPage = ['/login', '/register'].indexOf($location.path()) === -1;
-      //  var loggedIn = $rootScope.globals.currentUser;
-      //  if (restrictedPage && !loggedIn) {
-      //    $location.path('/login');
-      //  }
-      //});
+      $rootScope.$on('$locationChangeStart', function (event, next, current) {
+        FlashService.clearFlashMessage();
+      });
     }
   );
 })();

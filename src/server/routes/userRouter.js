@@ -38,31 +38,62 @@ function userRouter(app) {
     }
   );
 
+  app.post('/api/users/',
+    function (req, res) {
+      if (!req.body.username || !req.body.hiddenPW)  { // TODO: validate username
+        res.status(400).send('invalid username !');
+      }
+      var theUser = new User(req.body.username, req.body.hiddenPW, req.body.email,
+        req.body.firstname, req.body.lastname);
+      theUser.create().then(
+        function (user) {
+          res.status(200).send({ message: 'registered successfully' });
+        },
+        function (err) {
+          if (err.status === 400) {
+            res.status(400).send({ message: err.message });
+          } else {
+            res.status(500).send('cannot create the user due to system internal error');
+          }
+        }
+      );
+    });
+
   app.get('/api/users/:username', validAuth,
     function (req, res) {
+      res.status(200).send(req.user);
+    });
+
+  app.delete('/api/users/current-user/session', validAuth,
+    function (req, res) {
+      req.logout();
+      req.session.destroy();
       res.status(200).send(req.user);
     });
 
 }
 
 passport.use(
-  new LocalStrategy(
-    function (username, password, done) {
-      //var theUser = new User(username, password);
-      //theUser.verifySelf().then(
-      //  function (user) {
-      //    return done(null, user);
-      //  },
-      //  function (err) {
-      //    if (err.status === 500) {
-      //      return done(err, false, err.message);
-      //    } else {
-      //      return done(null, false, err.message);
-      //    }
-      //  }
-      //);
+  new LocalStrategy({
+      usernameField: 'username',
+      passwordField: 'hiddenPW'
+    },
+    function (username, hiddenPW, done) {
+      var theUser = new User(username, hiddenPW);
+      theUser.verifySelf().then(
+        function (user) {
+          return done(null, user);
+        },
+        function (err) {
+          if (err.status === 500) {
+            return done(err, false, err.message);
+          } else {
+            return done(null, false, err.message);
+          }
+        }
+      );
 
-      return done(null, { id: 2 }); // uncomment this line for debug;
+      //return done(null, { id: 2 }); // uncomment this line for debug;
     }
   )
 );
@@ -73,20 +104,22 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
   var theUser = new User();
-  return done(null, theUser);  // uncomment this line for debug;
-  //theUser.findById(id).then(
-  //  function (user) {
-  //    return done(null, user);
-  //  },
-  //  function (err) {
-  //    err.message += '/n This user might be removed from the system!';
-  //    if (err.status === 500) {
-  //      return done(err, false, err.message);
-  //    } else {
-  //      return done(null, false, err.message);
-  //    }
-  //  }
-  //);
+
+  //return done(null, theUser);  // uncomment this line for debug;
+
+  theUser.findById(id).then(
+    function (user) {
+      return done(null, user);
+    },
+    function (err) {
+      err.message += '/n This user might be removed from the system!';
+      if (err.status === 500) {
+        return done(err, false, err.message);
+      } else {
+        return done(null, false, err.message);
+      }
+    }
+  );
 });
 
 function validAuth(req, res, next) {

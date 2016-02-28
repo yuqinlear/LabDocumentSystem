@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function LoginCtrl($scope, $location, FlashService, AuthenticationService) {
+  function LoginCtrl($scope, $log, $location, FlashService, AuthenticationService) {
 
     AuthenticationService.clearCredentials();
 

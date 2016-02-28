@@ -41,6 +41,7 @@
     "body-parser": "^1.15.0",
     "busboy": "^0.2.12",
     "connect-busboy": "0.0.2",
+    "connect-mongodb-session": "^1.1.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "lodash": "^4.3.0",

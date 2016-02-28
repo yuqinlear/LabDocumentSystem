@@ -4,23 +4,9 @@
 (function () {
   'use strict';
 
-  function HomeCtrl($scope, $rootScope, $location, $log, UserService, blockUI) {
-
-    $scope.user = null;
-
-    //$scope.allUsers = [];
-    //$scope.deleteUser = deleteUser;
+  function HomeCtrl($scope, $rootScope, $location, $log, UserService, AuthenticationService, blockUI) {
 
     loadCurrentUser();
-
-    //loadAllUsers();
-
-    //function loadCurrentUser() {
-    //  UserService.getByUsername($rootScope.globals.currentUser.username)
-    //    .then(function (user) {
-    //      $scope.user = user;
-    //    });
-    //}
 
     function loadCurrentUser() {
       blockUI.start();
@@ -41,19 +27,23 @@
       );
     }
 
-    //function loadAllUsers() {
-    //  UserService.getAll()
-    //    .then(function (users) {
-    //      $scope.allUsers = users;
-    //    });
-    //}
-
-    //function deleteUser(id) {
-    //  UserService.delete(id)
-    //    .then(function () {
-    //      loadAllUsers();
-    //    });
-    //}
+    $scope.logout = function () {
+      $scope.dataLoading = true;
+      AuthenticationService.logout()
+        .then(
+        function (response) {
+          $log.log('the user logged out successfully');
+        },
+        function (err) {
+          $log.log('error occurred during logout');
+        }
+      ).finally(
+        function () {
+          $scope.dataLoading = false;
+          $location.path('/login');
+        }
+      );
+    };
 
   }
 

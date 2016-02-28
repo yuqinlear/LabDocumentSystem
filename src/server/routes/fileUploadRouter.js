@@ -9,16 +9,8 @@ var fs = require('fs');
 var inspect = require('util').inspect;
 var Busboy = require('busboy');
 var path = require('path');
-var appDir = path.dirname(require.main.filename);
-var dest = appDir + '/../../user_uploads/';
+var dest = global.projectPath + '/user_uploads/';
 
-fs.access(dest, function (err) {
-  console.log(err ? 'no access to ' + dest : 'can access ' + dest);
-  if (err) {
-    console.log('Creating upload directory' + dest);
-    fs.mkdirSync(dest);
-  }
-});
 module.exports = fileUploadRouter;
 
 function fileUploadRouter(app) {
@@ -26,26 +18,21 @@ function fileUploadRouter(app) {
     function (req, res) {
       var busboy = new Busboy({ headers: req.headers });
       busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
-        console.log('Field [' + fieldname + ']: value: ' + val);
-
         //add user name to dest path
-        if (fieldname === 'name') {
-          req.pathname = dest + val + '/';
-        }
+        //if (fieldname === 'name') {
+        //  req.pathname = dest + val + '/';
+        //}
 
       });
       busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-        console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding);
-        console.log('changing user path to ' + req.pathname);
-
-        //add user name to dest path
-        fs.access(req.pathname, function (err) {
+        var path = dest + req.user.username + '/';
+        fs.access(path, function (err) {
           console.log(err ? 'no access!' : 'can read/write');
           if (err) {
             console.log('no access, making directory now!');
-            fs.mkdir(req.pathname, function (err) {
+            fs.mkdir(path, function (err) {
               if (!err) {
-                file.pipe(fs.createWriteStream(req.pathname + filename));
+                file.pipe(fs.createWriteStream(path + filename));
               } else {
                 console.log('Error when making directory' + err);
               }
@@ -57,24 +44,9 @@ function fileUploadRouter(app) {
       });
       busboy.on('finish', function () {
         res.writeHead(200, { Connection: 'close' });
-        res.end("That's all folks!");
+        res.end('file upload is done!');
       });
       req.pipe(busboy);
-
-      /*
-      var fstream;
-      req.pipe(req.busboy);
-      req.busboy.on('file', function (fieldname, file, filename) {
-        console.log('fieldname: ' + fieldname);
-        console.log('Uploading: ' + filename);
-        fstream = fs.createWriteStream(__dirname + '/uploads/' + filename);
-        file.pipe(fstream);
-        fstream.on('close', function () {
-          res.redirect('back');
-        });
-      });
-    });
-*/
     });
 
 }

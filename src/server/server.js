@@ -8,12 +8,17 @@ var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 var timeout = require('connect-timeout');
 var expressSession = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(expressSession);
 var passport = require('passport');
 var path = require('path');
 var _ = require('lodash');
 var Logger = require('./utils/log-manager').Logger;
 var app = express();
 var crypto = require('crypto');
+var sessionStore = new MongoDBStore({
+    uri: 'mongodb://localhost:27017/labDoc',
+    collection: 'sessions'
+  });
 
 var port = process.env.PORT || 3000;
 global.projectPath = path.resolve(__dirname, '../../');
@@ -27,12 +32,14 @@ app.use(busboy());
 app.use(function hashPW(req, res, next) {
   console.log(req.body.password);
   if (typeof req.body.password  === 'string') {
-    req.body.password = crypto.createHash('sha256', 'docLab_salt').update(req.body.password).digest('base64');
+    req.body.hiddenPW = crypto.createHash('sha256', 'docLab_salt').update(req.body.password).digest('base64');
+    delete req.body.password;
   }
   next();
 });
 app.use(expressSession({
   secret: 'labDoc_session_salt',
+  store: sessionStore,
   cookie: { maxAge: 86400000 }, // 1 day
   resave: false,
   saveUninitialized: false
@@ -45,10 +52,6 @@ app.use(function (req, res, next) {
   });
   next();
 });
-
-//app.get('/api/', function (req, res) {
-//  res.cookie('localhost', 'test: true', { maxAge:  365 * 86400000 }).send('This is a test API!');
-//});
 
 require('./routes/userRouter')(app);
 require('./routes/fileUploadRouter')(app);

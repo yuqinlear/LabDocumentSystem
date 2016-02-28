@@ -8,12 +8,12 @@
 
     $scope.register = function register() {
       $scope.dataLoading = true;
-      UserService.Create($scope.user)
+      UserService.create($scope.user)
         .then(
         function (response) {
-            FlashService.success('Registered successfully', true);
-            $location.path('/login');
-          },
+          FlashService.success('Registered successfully', true);
+          $location.path('/login');
+        },
         function (err) {
           FlashService.error(err.message);
           $scope.dataLoading = false;

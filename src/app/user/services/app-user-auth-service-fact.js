@@ -20,6 +20,21 @@
       );
     }
 
+    function logout() {
+      return $http.delete('/api/users/current-user/session')
+        .then(
+        function (response) {
+          return response;
+        },
+        function (err) {
+          return $q.reject({
+            status: err.status,
+            message: 'log out failed!'
+          });
+        }
+      );
+    }
+
     function setCredentials(username, password) {
       var authdata = Base64.encode(username + ':' + password);
 
@@ -42,6 +57,7 @@
 
     return {
       login: login,
+      logout: logout,
       setCredentials: setCredentials,
       clearCredentials: clearCredentials
     };
