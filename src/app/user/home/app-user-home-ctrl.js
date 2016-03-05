@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function HomeCtrl($scope, $rootScope, $location, $log, UserService, AuthenticationService, blockUI) {
+  function HomeCtrl($scope, $location, $log, UserService, AuthenticationService, blockUI) {
 
     loadCurrentUser();
 
@@ -17,10 +17,10 @@
             $scope.user = user;
           },
           function (err) {
-            $scope.user = { username: 'testUserName', firstname: 'testFirstname' };
+            //$scope.user = { username: 'testUserName', firstname: 'testFirstname' };
 
-            //$log.error(err);
-            //$location.path('/login');
+            $log.error(err);
+            $location.path('/login');
           }
       ).finally(
         function () {

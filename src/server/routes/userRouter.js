@@ -12,33 +12,8 @@ var express = require('express'),
 module.exports = userRouter;
 
 function userRouter(app) {
-  app.get('/api/users/', validAuth,
-    function (req, res) {
-      res.status(200).send('welcome !');
-    });
 
-  app.post('/api/users/authenticate',
-    function (req, res, next) {
-      // PassportJs: when using a custom callback, it becomes the application's responsibility to establish a session
-      // (by calling req.login())
-      passport.authenticate('local', function (err, user, info) {
-        if (err) {
-          return res.status(500).json({ err: err });
-        }
-        if (!user) {
-          return res.status(401).json({ err: info });
-        }
-        req.login(user, function (err) {
-          if (err) {
-            return res.status(500).json({ err: 'login failed' });
-          }
-          res.status(200).json({ status: 'Login successfully!' });
-        });
-      })(req, res, next);
-    }
-  );
-
-  app.post('/api/users/',
+  app.post('/api/current-user',
     function (req, res) {
       if (!req.body.username || !req.body.hiddenPW)  { // TODO: validate username
         res.status(400).send('invalid username !');
@@ -59,12 +34,12 @@ function userRouter(app) {
       );
     });
 
-  app.get('/api/users/:username', validAuth,
+  app.get('/api/current-user', validAuth,
     function (req, res) {
       res.status(200).send(req.user);
     });
 
-  app.delete('/api/users/current-user/session', validAuth,
+  app.delete('/api/current-user/session', validAuth,
     function (req, res) {
       req.logout();
       req.session.destroy();
@@ -72,51 +47,6 @@ function userRouter(app) {
     });
 
 }
-
-passport.use(
-  new LocalStrategy({
-      usernameField: 'username',
-      passwordField: 'hiddenPW'
-    },
-    function (username, hiddenPW, done) {
-      User.verify(username, hiddenPW).then(
-        function (user) {
-          return done(null, user);
-        },
-        function (err) {
-          if (err.status === 500) {
-            return done(err, false, err.message);
-          } else {
-            return done(null, false, err.message);
-          }
-        }
-      );
-
-      //return done(null, { id: 2 }); // uncomment this line for debug;
-    }
-  )
-);
-
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function (id, done) {
-  //return done(null, {});  // uncomment this line for debug;
-  User.findById(id).then(
-    function (user) {
-      return done(null, user);
-    },
-    function (err) {
-      err.message += '/n This user might be removed from the system!';
-      if (err.status === 500) {
-        return done(err, false, err.message);
-      } else {
-        return done(null, false, err.message);
-      }
-    }
-  );
-});
 
 function validAuth(req, res, next) {
   if (!req.isAuthenticated()) {

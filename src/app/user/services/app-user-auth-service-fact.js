@@ -6,7 +6,7 @@
   function AuthenticationService($http, $cookies, $rootScope, $log, $q, UserService) {
 
     function login(username, password) {
-      return $http.post('/api/users/authenticate', { username: username, password: password })
+      return $http.post('/api/auth/local', { username: username, password: password })
         .then(
         function (response) {
           return response;
@@ -21,7 +21,7 @@
     }
 
     function logout() {
-      return $http.delete('/api/users/current-user/session')
+      return $http.delete('/api/current-user/session')
         .then(
         function (response) {
           return response;
