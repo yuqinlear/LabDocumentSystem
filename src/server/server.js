@@ -54,6 +54,7 @@ app.use(function (req, res, next) {
   next();
 });
 
+require('./routes/authRouter')(app);
 require('./routes/userRouter')(app);
 require('./routes/documentRouter')(app);
 
